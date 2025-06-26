@@ -89,6 +89,7 @@ export class GameEngine {
     if (gameState.currentRealm === 6 && this.player.canShootLaser()) {
       if (this.player.shoot()) {
         this.createLaser();
+        console.log('Laser fired! Total lasers:', this.lasers.length);
       }
     }
 
@@ -119,14 +120,21 @@ export class GameEngine {
 
   createLaser() {
     const playerBounds = this.player.getBounds();
+    const laserX = this.player.player.facingRight ? 
+      playerBounds.x + playerBounds.width : 
+      playerBounds.x - 35;
+    
     this.lasers.push({
-      x: playerBounds.x + playerBounds.width,
-      y: playerBounds.y + playerBounds.height / 2,
-      width: 30,
+      x: laserX,
+      y: playerBounds.y + playerBounds.height / 2 - 2,
+      width: 35,
       height: 4,
-      velocityX: 500,
+      velocityX: this.player.player.facingRight ? 600 : -600,
       active: true
     });
+    
+    // Create muzzle flash effect
+    this.particles.createLaserHit(laserX, playerBounds.y + playerBounds.height / 2);
   }
 
   checkCollisions() {
@@ -230,16 +238,21 @@ export class GameEngine {
       this.dragon.render(this.ctx);
     }
     
-    // Render lasers
-    this.ctx.fillStyle = '#00FF00';
+    // Render lasers with bright glow effect
     this.lasers.forEach(laser => {
       if (laser.active) {
+        // Outer glow
+        this.ctx.shadowColor = '#00FF00';
+        this.ctx.shadowBlur = 15;
+        this.ctx.fillStyle = '#00FF00';
+        this.ctx.fillRect(laser.x - 2, laser.y - 1, laser.width + 4, laser.height + 2);
+        
+        // Inner bright core
+        this.ctx.shadowBlur = 0;
+        this.ctx.fillStyle = '#FFFFFF';
         this.ctx.fillRect(laser.x, laser.y, laser.width, laser.height);
         
-        // Laser glow effect
-        this.ctx.shadowColor = '#00FF00';
-        this.ctx.shadowBlur = 10;
-        this.ctx.fillRect(laser.x, laser.y, laser.width, laser.height);
+        // Reset shadow
         this.ctx.shadowBlur = 0;
       }
     });

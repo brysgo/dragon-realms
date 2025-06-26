@@ -73,13 +73,16 @@ export class PlayerController {
   }
 
   canShootLaser(): boolean {
-    return this.canShoot && (this.keys['Space']);
+    const now = Date.now();
+    const cooldownPassed = (now - this.lastShotTime) > 300; // 300ms cooldown
+    return cooldownPassed && (this.keys['Space']);
   }
 
   shoot() {
-    if (this.canShoot) {
-      this.canShoot = false;
-      this.lastShotTime = Date.now();
+    const now = Date.now();
+    if ((now - this.lastShotTime) > 300) { // 300ms cooldown
+      this.lastShotTime = now;
+      console.log('Space key pressed - shooting laser!');
       return true;
     }
     return false;

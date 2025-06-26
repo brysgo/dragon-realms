@@ -3,7 +3,7 @@ import { useAudio } from '@/lib/stores/useAudio';
 
 export default function GameUI() {
   const { currentRealm, playerHealth, dragonHealth, gamePhase } = useGameState();
-  const { isMuted, toggleMute } = useAudio();
+  const { isMuted, toggleMute, isBackgroundMusicPlaying } = useAudio();
 
   if (gamePhase !== 'playing') return null;
 

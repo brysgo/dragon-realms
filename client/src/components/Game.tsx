@@ -5,8 +5,8 @@ import { useGameState } from '@/lib/stores/useGameState';
 import { useAudio } from '@/lib/stores/useAudio';
 
 export default function Game() {
-  const { gamePhase } = useGameState();
-  const { setBackgroundMusic, setHitSound, setSuccessSound } = useAudio();
+  const { gamePhase, startGame } = useGameState();
+  const { setBackgroundMusic, setHitSound, setSuccessSound, startBackgroundMusic } = useAudio();
   
   // Initialize audio
   useEffect(() => {
@@ -23,6 +23,13 @@ export default function Game() {
     successSound.volume = 0.7;
     setSuccessSound(successSound);
   }, [setBackgroundMusic, setHitSound, setSuccessSound]);
+
+  // Start background music when game starts
+  useEffect(() => {
+    if (gamePhase === 'playing') {
+      startBackgroundMusic();
+    }
+  }, [gamePhase, startBackgroundMusic]);
 
   return (
     <div className="w-full h-full relative bg-black">
