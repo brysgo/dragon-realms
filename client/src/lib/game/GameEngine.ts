@@ -218,8 +218,12 @@ export class GameEngine {
     // Render realm
     this.realmManager.render(this.ctx);
     
-    // Render player
-    this.player.render(this.ctx);
+    // Render player (with laser gun in boss battle)
+    if (useGameState.getState().currentRealm === 6) {
+      this.player.renderWithLaserGun(this.ctx);
+    } else {
+      this.player.render(this.ctx);
+    }
     
     // Render dragon
     if (this.dragon) {

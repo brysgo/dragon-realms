@@ -75,8 +75,25 @@ export default function GameUI() {
       <div className="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white p-3 rounded pointer-events-auto text-sm">
         <div>Move: A/D or ←→</div>
         <div>Jump: W or ↑</div>
-        {currentRealm === 6 && <div>Shoot: Space</div>}
+        {currentRealm === 6 && (
+          <div className="text-green-400 font-bold">
+            🔫 Laser Gun: Space
+          </div>
+        )}
       </div>
+
+      {/* Laser Gun Status (Boss Battle Only) */}
+      {currentRealm === 6 && (
+        <div className="absolute top-40 left-4 bg-green-900 bg-opacity-80 text-green-300 p-3 rounded pointer-events-auto">
+          <div className="flex items-center space-x-2">
+            <span className="text-2xl">🔫</span>
+            <div>
+              <div className="font-bold">LASER GUN EQUIPPED</div>
+              <div className="text-sm">Press SPACE to shoot</div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

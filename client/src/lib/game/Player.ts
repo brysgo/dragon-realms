@@ -115,6 +115,26 @@ export class PlayerController {
     ctx.fillRect(x + 10, y + 12, width - 20, 8);
   }
 
+  renderWithLaserGun(ctx: CanvasRenderingContext2D) {
+    // Draw normal character
+    this.render(ctx);
+    
+    const { x, y, width, height } = this.player;
+    
+    // Draw laser gun
+    ctx.fillStyle = '#666666'; // Gun body
+    const gunX = this.player.facingRight ? x + width : x - 20;
+    ctx.fillRect(gunX, y + height / 2 - 3, 20, 6);
+    
+    // Gun barrel
+    ctx.fillStyle = '#333333';
+    ctx.fillRect(gunX + (this.player.facingRight ? 15 : 0), y + height / 2 - 1, 8, 2);
+    
+    // Green laser sight
+    ctx.fillStyle = '#00FF00';
+    ctx.fillRect(gunX + (this.player.facingRight ? 18 : 2), y + height / 2, 2, 1);
+  }
+
   getBounds() {
     return {
       x: this.player.x,
