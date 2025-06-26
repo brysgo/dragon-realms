@@ -154,6 +154,23 @@ export class GameEngine {
       );
       this.player.player.y = resolved.newY;
       this.player.setOnGround(resolved.onGround);
+      
+      // Check if player landed on an explosive platform
+      if (groundCheck.platform && groundCheck.platform.explosive) {
+        // Find the platform index
+        const platformIndex = this.realmManager.platforms.findIndex(p => p === groundCheck.platform);
+        if (platformIndex !== -1) {
+          this.realmManager.explodePillar(platformIndex);
+          this.particles.createExplosion(
+            groundCheck.platform.x + groundCheck.platform.width / 2,
+            groundCheck.platform.y + groundCheck.platform.height / 2
+          );
+          gameState.resetHealth();
+          this.player.setPosition(100, this.canvasHeight - 200);
+          useAudio.getState().playHit();
+          return;
+        }
+      }
     }
 
     // Realm-specific collision checks
@@ -169,18 +186,7 @@ export class GameEngine {
           useAudio.getState().playHit();
           break;
           
-        case 'explosive':
-          if (realmCollision.index !== undefined) {
-            this.realmManager.explodePillar(realmCollision.index);
-            this.particles.createExplosion(
-              this.realmManager.platforms[realmCollision.index].x + 40,
-              this.realmManager.platforms[realmCollision.index].y + 50
-            );
-            gameState.resetHealth();
-            this.player.setPosition(100, this.canvasHeight - 200);
-            useAudio.getState().playHit();
-          }
-          break;
+
           
         case 'door':
           const now = Date.now();

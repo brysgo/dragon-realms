@@ -182,15 +182,18 @@ export class RealmManager {
   }
 
   setupChoiceRealm(ground: number) {
-    // Starting platform
-    this.platforms.push({ x: this.canvasWidth / 2 - 50, y: ground, width: 100, height: 60, color: '#8B4513' });
+    // Ground platform for walking
+    this.platforms.push({ x: 0, y: ground, width: this.canvasWidth, height: 60, color: '#8B4513' });
     
-    // Two walls
+    // Starting area (left side)
+    this.platforms.push({ x: 50, y: ground - 20, width: 150, height: 20, color: '#A0522D' });
+    
+    // Two walls with gaps to walk through
     this.walls.push({
       x: this.canvasWidth / 2 - 150,
       y: ground - 200,
       width: 100,
-      height: 200,
+      height: 140, // Shorter so player can walk under
       deadly: true // Left wall kills
     });
     
@@ -198,9 +201,12 @@ export class RealmManager {
       x: this.canvasWidth / 2 + 50,
       y: ground - 200,
       width: 100,
-      height: 200,
+      height: 140, // Shorter so player can walk under
       deadly: false // Right wall is safe
     });
+    
+    // Platform after the choice
+    this.platforms.push({ x: this.canvasWidth - 200, y: ground - 20, width: 100, height: 20, color: '#A0522D' });
     
     this.door = { x: this.canvasWidth - 100, y: ground - 80, width: 60, height: 80 };
   }
@@ -320,10 +326,7 @@ export class RealmManager {
       if (platform.exploded) continue;
       
       if (this.rectCollision(playerBounds, platform)) {
-        if (platform.explosive) {
-          return { collision: true, type: 'explosive', index: i };
-        }
-        return { collision: true, type: 'platform' };
+        return { collision: true, type: 'platform', index: i };
       }
     }
 

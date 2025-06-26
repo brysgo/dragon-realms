@@ -13,7 +13,7 @@ export class CollisionDetector {
            rect1.y + rect1.height > rect2.y;
   }
 
-  static checkGroundCollision(player: Rectangle, platforms: Rectangle[]): { collision: boolean, platform?: Rectangle } {
+  static checkGroundCollision(player: Rectangle, platforms: any[]): { collision: boolean, platform?: any } {
     for (const platform of platforms) {
       // Check if player is falling onto platform from above
       if (player.x < platform.x + platform.width &&
@@ -26,7 +26,7 @@ export class CollisionDetector {
     return { collision: false };
   }
 
-  static resolveCollision(player: Rectangle, platform: Rectangle, playerVelocityY: number): { newY: number, onGround: boolean } {
+  static resolveCollision(player: Rectangle, platform: any, playerVelocityY: number): { newY: number, onGround: boolean } {
     // Landing on top of platform
     if (playerVelocityY > 0) {
       return {
