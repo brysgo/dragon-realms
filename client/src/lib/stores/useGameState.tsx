@@ -45,6 +45,7 @@ export const useGameState = create<GameState>((set, get) => ({
   
   nextRealm: () => {
     const { currentRealm } = get();
+    
     if (currentRealm < 6) {
       set({ 
         currentRealm: currentRealm + 1,
@@ -72,7 +73,7 @@ export const useGameState = create<GameState>((set, get) => ({
       const newHealth = dragonHealth - 1;
       if (newHealth <= 0) {
         set({ dragonHealth: 0 });
-        setTimeout(() => get().nextRealm(), 1000);
+        setTimeout(() => get().victory(), 1000);
       } else {
         set({ dragonHealth: newHealth });
       }

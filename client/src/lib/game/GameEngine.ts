@@ -16,6 +16,7 @@ export class GameEngine {
   particles: ParticleSystem;
   lasers: Laser[] = [];
   lastTime: number = 0;
+  lastRealmTransition: number = 0;
 
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
     this.ctx = ctx;
@@ -32,13 +33,15 @@ export class GameEngine {
   }
 
   setupRealmListener() {
-    // Listen for realm changes
-    useGameState.subscribe(
-      (state) => state.currentRealm,
-      (realm) => {
-        this.switchRealm(realm);
+    // Listen for realm changes using the proper Zustand subscribe method
+    let currentRealm = useGameState.getState().currentRealm;
+    
+    useGameState.subscribe((state) => {
+      if (state.currentRealm !== currentRealm) {
+        currentRealm = state.currentRealm;
+        this.switchRealm(currentRealm);
       }
-    );
+    });
   }
 
   switchRealm(realmNumber: number) {
@@ -180,7 +183,11 @@ export class GameEngine {
           break;
           
         case 'door':
-          gameState.nextRealm();
+          const now = Date.now();
+          if (now - this.lastRealmTransition > 1000) { // 1 second cooldown
+            this.lastRealmTransition = now;
+            gameState.nextRealm();
+          }
           break;
           
         case 'safe_wall':
