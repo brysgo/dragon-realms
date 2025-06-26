@@ -147,26 +147,16 @@ export class RealmManager {
     // White room background
     this.platforms.push({ x: 0, y: ground, width: this.canvasWidth, height: 60, color: '#FFFFFF' });
     
-    // 5 pillars - first 4 on right explode, last on left explodes
+    // 5 pillars total - 4 on right (explosive), 1 on left (explosive), others safe
     const pillarWidth = 80;
     const pillarHeight = 200;
     
-    // Right side pillars (explosive)
-    for (let i = 0; i < 4; i++) {
-      this.platforms.push({
-        x: this.canvasWidth - 150 - i * 120,
-        y: ground - pillarHeight,
-        width: pillarWidth,
-        height: pillarHeight,
-        color: '#FF6B6B',
-        explosive: true,
-        exploded: false
-      });
-    }
+    // Safe starting platform
+    this.platforms.push({ x: 50, y: ground, width: 100, height: 60, color: '#FFFFFF' });
     
-    // Left side pillar (explosive)
+    // Left side pillar (explosive - red)
     this.platforms.push({
-      x: 100,
+      x: 200,
       y: ground - pillarHeight,
       width: pillarWidth,
       height: pillarHeight,
@@ -175,8 +165,39 @@ export class RealmManager {
       exploded: false
     });
     
-    // Safe starting platform
-    this.platforms.push({ x: 50, y: ground, width: 100, height: 60, color: '#FFFFFF' });
+    // Safe middle pillars (green)
+    this.platforms.push({
+      x: 320,
+      y: ground - pillarHeight,
+      width: pillarWidth,
+      height: pillarHeight,
+      color: '#90EE90',
+      explosive: false,
+      exploded: false
+    });
+    
+    this.platforms.push({
+      x: 440,
+      y: ground - pillarHeight,
+      width: pillarWidth,
+      height: pillarHeight,
+      color: '#90EE90',
+      explosive: false,
+      exploded: false
+    });
+    
+    // Right side pillars (4 explosive - red)
+    for (let i = 0; i < 4; i++) {
+      this.platforms.push({
+        x: this.canvasWidth - 200 - i * 100,
+        y: ground - pillarHeight,
+        width: pillarWidth,
+        height: pillarHeight,
+        color: '#FF6B6B',
+        explosive: true,
+        exploded: false
+      });
+    }
     
     this.door = { x: this.canvasWidth - 100, y: ground - 80, width: 60, height: 80 };
   }
