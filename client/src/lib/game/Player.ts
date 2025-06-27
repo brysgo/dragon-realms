@@ -33,10 +33,18 @@ export class PlayerController {
   setupControls() {
     window.addEventListener('keydown', (e) => {
       this.keys[e.code] = true;
+      // Also handle space key specifically
+      if (e.code === 'Space') {
+        this.keys['Space'] = true;
+        console.log('Space key down detected');
+      }
     });
     
     window.addEventListener('keyup', (e) => {
       this.keys[e.code] = false;
+      if (e.code === 'Space') {
+        this.keys['Space'] = false;
+      }
     });
   }
 
