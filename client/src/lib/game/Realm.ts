@@ -141,9 +141,9 @@ export class RealmManager {
     this.platforms.push({ x: 750, y: ground - 80, width: 60, height: 140, color: '#87CEEB' });
     
     // Platform near the door so player can reach it
-    this.platforms.push({ x: this.canvasWidth - 180, y: ground - 80, width: 70, height: 80, color: '#87CEEB' });
+    this.platforms.push({ x: this.canvasWidth - 180, y: ground - 120, width: 70, height: 120, color: '#87CEEB' });
     
-    this.door = { x: this.canvasWidth - 100, y: ground - 80, width: 60, height: 80 };
+    this.door = { x: this.canvasWidth - 100, y: ground - 120, width: 60, height: 80 };
   }
 
   setupExplosiveRealm(ground: number) {
